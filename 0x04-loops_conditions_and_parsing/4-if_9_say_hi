@@ -4,14 +4,14 @@
 # Displays "Hi" before "Best School" on the 9 iteration
 
 
-counter=0
+counter=1
 
-while [ $counter -lt 10 ]
+while [ $counter -le 10 ]
 do
+	echo "Best School"
 	if [ $counter -eq 9 ]
 	then
 		echo "Hi"
 	fi
-        	echo "Best School"
-        	(( counter++ ))
+        (( counter++ ))
 done
