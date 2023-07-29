@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+killed() {
+	rm /var/run/bamansourscript.pid
+	exit
+}
+
+echo "$$" > /var/run/bamansourscript.pid
+
+while true
+do
+	echo "To infinity and beyond"
+	sleep 2
+	trap 'echo "Y U no love me?!"' SIGTERM
+	trap 'killed' SIGQUIT
+done
