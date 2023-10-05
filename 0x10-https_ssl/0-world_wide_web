@@ -2,18 +2,12 @@
 # A script that display information about subdomains.
 # ./1-world_wide_web <domain> <subdomain>
 
-domain_inf () {
-    line=$(dig "$2"."$1" | grep -A1 'ANSWER SECTION:' | tr '\t' '\n' | tail -2 | tr '\n' ' ')
-    echo "$2 $line" | awk '{print "The subdomain " $1 " is a " $2 " record and points to " $3}'
-}
-
-if [ "$#" == 1 ]
-then
-  domain_inf "$1" "www"
-  domain_inf "$1" "lb-01"
-  domain_inf "$1" "web-01"
-  domain_inf "$1" "web-02"
-elif [ "$#" == 2 ]
-then
-  domain_inf "$1" "$2"
+if [ "$#" -eq 1 ]; then
+    echo "$(dig www.$1 | awk '/ANSWER SECTION:/ {getline; print "The subdomain www is a "$4" record and points to "$5}')"
+    echo "$(dig lb-01.$1 | awk '/ANSWER SECTION:/ {getline; print "The subdomain lb-01 is a "$4" record and points to "$5}')"
+    echo "$(dig web-01.$1 | awk '/ANSWER SECTION:/ {getline; print "The subdomain web-01 is a "$4" record and points to "$5}')"
+    echo "$(dig web-02.$1 | awk '/ANSWER SECTION:/ {getline; print "The subdomain web-02 is a "$4" record and points to "$5}')"
+elif [ "$#" -eq 2 ]; then
+    subdomain=$2
+    echo "$(dig $subdomain.$1 | awk '/ANSWER SECTION:/ {getline; print "The subdomain '"$subdomain"' is a "$4" record and points to "$5}')"
 fi
