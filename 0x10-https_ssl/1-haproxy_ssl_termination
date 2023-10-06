@@ -33,10 +33,14 @@ defaults
         errorfile 503 /etc/haproxy/errors/503.http
         errorfile 504 /etc/haproxy/errors/504.http
 
-listen myserver
-        bind *:80
-        bind *:443 ssl crt /etc/haproxy/ssl/www.neuralfpga.tech.pem
-        redirect scheme https code 301 if !{ ssl_fc }
-        balance roundrobin
-        server server1 3.95.32.66:80 check
-        server server2 100.27.13.115:80 check
+
+frontend http_front
+        bind *:443 ssl crt /etc/letsencrypt/live/www.neuralfpga.tech/fullchain.pem
+        http-request add-header X-Forwarded-proto http
+        http-request redirect https scheme https if !{ ssl_fc }
+        use_backend http_back
+
+backend http_back
+        redirect scheme https if !{ ssl_fc }
+        server 392909-web-01 3.95.32.66:80
+        server 392909-web-02 100.27.13.115:80
