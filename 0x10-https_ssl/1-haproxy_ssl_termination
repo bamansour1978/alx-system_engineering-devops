@@ -33,16 +33,12 @@ defaults
         errorfile 503 /etc/haproxy/errors/503.http
         errorfile 504 /etc/haproxy/errors/504.http
 
+frontend load_balancer
+        bind *:80
+        mode http
+        default_backend foo
 
-rontend http_front
-        bind *:443 ssl crt /etc/letsencrypt/live/www.neuralfpga.tech/fullchain.pem
-        http-request add-header X-Forwarded-proto http
-        http-request redirect https scheme https if !{ ssl_fc }
-        use_backend http_back
-
-backend http_back
+backend foo
         balance roundrobin
-        redirect scheme https if !{ ssl_fc }
         server 392909-web-01 3.95.32.66:80 check
         server 392909-web-02 100.27.13.115:80 check
-
