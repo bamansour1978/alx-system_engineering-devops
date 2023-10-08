@@ -35,6 +35,7 @@ defaults
 
 frontend load_balancer
         bind *:80
+	bind *:ssl crt /etc/letsencrypt/live/www.neuralfpga.tech/fullchain.pem
         mode http
         default_backend foo
 
