@@ -1,1 +1,1 @@
-# 0x18. Webstack monitoring project
+# 0x18. Webstack monitoring project alone
